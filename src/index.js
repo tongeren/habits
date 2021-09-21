@@ -1,12 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import ProviderWrapper from './helpers/ProviderWrapper';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ProviderWrapper>
+      <App />
+    </ProviderWrapper>
   </React.StrictMode>,
   document.getElementById('root')
 );
