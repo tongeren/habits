@@ -2,4 +2,5 @@ export const ERR_MSG_EMAIL_EXISTS_ALREADY = "Validation failed: E-Mail is alread
 export const ERR_MSG_USER_CREATION_FAILED = "Creating a user failed."; 
 export const ERR_MSG_DATABASE_ERROR = "Database error.";
 export const ERR_MSG_UNKNOWN_ERROR = "Unknown error.";
-
+export const ERR_MSG_VALIDATION_FAILED = 'Validation error.';
+export const ERR_MSG_AUTHENTICATION_FAILED = 'Could not authenticate you.';

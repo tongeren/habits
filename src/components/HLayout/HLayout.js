@@ -1,5 +1,5 @@
-import Container from '@material-ui/core/Container';
-import { styled } from '@material-ui/core/styles';
+import Container from '@mui/material/Container';
+import { styled } from '@mui/material/styles';
 
 import HAppBar from '../HAppBar/HAppBar';
 import HCopyright from '../HCopyright/HCopyright';

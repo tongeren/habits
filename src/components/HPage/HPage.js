@@ -1,15 +1,18 @@
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 
 import HHeroPage from '../HHeroPage/HHeroPage';
 import HLogIn from '../HLogIn/HLogIn';
 import HSignUp from '../HSignUp/HSignUp';
 import HWelcome from '../HWelcome/HWelcome';
 
+import HNotification from '../UI/HNotification';
+
 const ContainerWrap = ({ children }) => (
     <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
-        { children }
+            <HNotification />
+            { children }
         </Box>
     </Container>
 );

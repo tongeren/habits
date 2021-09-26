@@ -1,7 +1,7 @@
-import Button from '@material-ui/core/Button';
-import CardMedia from '@material-ui/core/CardMedia';
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Button from '@mui/material/Button';
+import CardMedia from '@mui/material/CardMedia';
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 const HHero = props => {
     const { imgSrc, imgAlt, title, subtitle, ctaButtonClickHandler } = props;

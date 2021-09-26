@@ -1,26 +1,49 @@
 import { useDispatch } from 'react-redux';
-import { authActions } from '../../store/auth';
 
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 
-import { SIGNUP_URL } from '../../helpers/api-info';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
+import { authActions, signupUser } from '../../store/auth';
+import useInput from '../../hooks/use-input';
+
 import { 
-    ERR_MSG_EMAIL_EXISTS_ALREADY, 
-    ERR_MSG_USER_CREATION_FAILED 
-} from '../../helpers/error-messages';
-
-// import isEmail from 'validator/es/lib/isEmail';
-// import useInput from '../../hooks/use-input';
+    isValidEmail, 
+    isStrongEnoughPassword,
+    PasswordRequirements
+} from '../../helpers/input-requirements';
 
 const HSignUp = () => {
+    const { 
+        value: enteredEmail,
+        isValid: enteredEmailIsValid,
+        hasError: emailInputHasError,
+        valueChangeHandler: emailInputChangeHandler,
+        valueBlurHandler: emailInputBlurHandler,
+        reset: resetEmailInput
+    } = useInput(isValidEmail);
+
+    const { 
+        value: enteredPassword,
+        isValid: enteredPasswordIsValid,
+        hasError: passwordInputHasError,
+        valueChangeHandler: passwordInputChangeHandler,
+        valueBlurHandler: passwordInputBlurHandler,
+        reset: resetPasswordInput
+    } = useInput(isStrongEnoughPassword);
+
+    let formIsValid = false;
+
+    if (!emailInputHasError && !passwordInputHasError) formIsValid = true;
+
     const dispatch = useDispatch();
 
     const loginHandler = () => {
@@ -29,35 +52,20 @@ const HSignUp = () => {
 
     const signupHandler = event => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const email = data.get('email');
-        const password = data.get('password');
-        fetch(SIGNUP_URL, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                carverMatrices: [] 
-            })
-        })
-        .then(res => {
-            if (res.status === 422) {
-                throw new Error(ERR_MSG_EMAIL_EXISTS_ALREADY);
-            }
-            if (res.status === 201) {
-                return res.json();
-            } else {
-                throw new Error(ERR_MSG_USER_CREATION_FAILED);
-            }
-        })
-        .then(resData => {
-            console.log(resData);
-            // User has succesfully signed up, so let him log in now
-            dispatch(authActions.showLogIn());
-        })
+
+        if (!enteredEmailIsValid || !enteredPasswordIsValid) return;
+
+        const email = enteredEmail;
+        const password = enteredPassword;
+
+        signupUser(email, password)(dispatch);
+
+        // Reset input fields
+        resetEmailInput();
+        resetPasswordInput();
+
+        // User has succesfully signed up, so let him log in now
+        dispatch(authActions.showLogIn());
     };
 
     return (
@@ -80,7 +88,12 @@ const HSignUp = () => {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <Box component="form" noValidate onSubmit={ signupHandler } sx={{ mt: 3 }}>
+                <Box 
+                    component="form" 
+                    noValidate 
+                    onSubmit={ signupHandler } 
+                    sx={{ mt: 3 }}
+                >
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
@@ -90,21 +103,41 @@ const HSignUp = () => {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                value={ enteredEmail }
+                                error={ emailInputHasError }
+                                onChange={ emailInputChangeHandler }
+                                onBlur={ emailInputBlurHandler }
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
+                            <Tooltip
+                                disableFocusListener 
+                                open={ passwordInputHasError } 
+                                title={ <PasswordRequirements/> }
+                            >
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                    value={ enteredPassword }
+                                    error={ passwordInputHasError }
+                                    onChange={ passwordInputChangeHandler }
+                                    onBlur={ passwordInputBlurHandler }
+                                />
+                            </Tooltip>
                         </Grid>
                     </Grid>
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    <Button 
+                        type="submit" 
+                        fullWidth 
+                        variant="contained" 
+                        sx={{ mt: 3, mb: 2 }}
+                        disabled={ !formIsValid }
+                    >
                         Sign Up
                     </Button>
                     <Grid container justifyContent="center">

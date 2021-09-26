@@ -1,8 +1,8 @@
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem from '@mui/material/MenuItem';
 
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Assignment from '@material-ui/icons/Assignment';
-import LowPriority from '@material-ui/icons/LowPriority';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Assignment from '@mui/icons-material/Assignment';
+import LowPriority from '@mui/icons-material/LowPriority';
 
 const PREFIX = 'auth_';
 

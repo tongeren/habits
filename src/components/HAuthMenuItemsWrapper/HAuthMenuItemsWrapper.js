@@ -1,11 +1,11 @@
-import Avatar from '@material-ui/core/Avatar';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Divider from '@material-ui/core/Divider';
+import Avatar from '@mui/material/Avatar';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
 
-import PersonAdd from '@material-ui/icons/PersonAdd';
-import Login from '@material-ui/icons/Login';
-import Logout from '@material-ui/icons/Logout';
+import PersonAdd from '@mui/icons-material/PersonAdd';
+import Login from '@mui/icons-material/Login';
+import Logout from '@mui/icons-material/Logout';
 
 const HAuthMenuItemsWrapper = ({ 
     isAuthenticated, 
